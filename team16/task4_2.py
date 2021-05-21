@@ -32,45 +32,45 @@ class MainApp(QMainWindow,MAIN_WINDOW):
         self.setupUi(self)
         self.setGeometry(0, 0, 1350, 690)
         self.Buttons=[self.button_1,self.button_2]
-        # self.actionsong.triggered.connect(lambda: self.mp3Converter(1))
-        # self.actionsong2.triggered.connect(lambda: self.mp3Converter(2))
+        self.actionsong.triggered.connect(lambda: self.mp3Converter(1))
+        self.actionsong2.triggered.connect(lambda: self.mp3Converter(2))
         self.button_1.clicked.connect(self.spectro)
         self.button_2.clicked.connect(self.spectro)
 
-    # def mp3Converter(self,songNumber):
-    #     fname= QFileDialog.getOpenFileName( self, 'choose the signal', os.getenv('HOME') ,"mp3(*.mp3)" ) 
-    #     self.path = fname[0] 
-    #     if self.path =="" :
-    #         return
-    #     # mp3_audio = AudioSegment.from_file( self.path , format="mp3")[:60000]  # read mp3
-    #     wname = mktemp('.wav')  # use temporary file
-    #     mp3_audio.export(wname, format="wav")  # convert to wav
-    #     if 1 == songNumber :
-    #         self.label_2.setText(os.path.splitext(os.path.basename(self.path))[0])
-    #         self.Buttons[1].setDisabled(False) 
-    #         self.wavsong1,self.samplingFrequency1 =librosa.load(wname)
-    #         self.OpenAgain_flag1  =  True
+    def mp3Converter(self,songNumber):
+        self.fname= QFileDialog.getOpenFileName( self, 'choose the signal', os.getenv('HOME') ,"mp3(*.mp3)" ) 
+        self.path = self.fname[0] 
+        if self.path =="" :
+            return
+        mp3_audio = AudioSegment.from_file( self.path , format="mp3")[:60000]  # read mp3
+        wname = mktemp('.wav')  # use temporary file
+        mp3_audio.export(wname, format="wav")  # convert to wav
+        if 1 == songNumber :
+            self.label_2.setText(os.path.splitext(os.path.basename(self.path))[0])
+            self.Buttons[1].setDisabled(False) 
+            self.wavsong1,self.samplingFrequency1 =librosa.load(wname)
+            self.OpenAgain_flag1  =  True
 
 
-    #         print("file1 read ")
+            print("file1 read ")
 
-    #     elif 2 == songNumber :
-    #         self.label_3.setText(os.path.splitext(os.path.basename(self.path))[0])
-    #         #self.Buttons[2].setDisabled(False) 
+        elif 2 == songNumber :
+            self.label_3.setText(os.path.splitext(os.path.basename(self.path))[0])
+            #self.Buttons[2].setDisabled(False) 
             
-    #         self.horizontalSlider.setDisabled(False)  
-    #         self.wavsong2,self.samplingFrequency2 =librosa.load(wname)
-    #         self.OpenAgain_flag2  = True
+            self.horizontalSlider.setDisabled(False)  
+            self.wavsong2,self.samplingFrequency2 =librosa.load(wname)
+            self.OpenAgain_flag2  = True
 
-    #         print("file2 read")
-    #     # self.tableWidget.clearContents()
+            print("file2 read")
+        # self.tableWidget.clearContents()
 
     def spectro(self):
         #plotting the spectrogram for .wav####
         if self.fname.endswith(".wav"):
-            fig = plot.figure()
-            plot.subplot(111)
-            self.powerSpectrum, self.freqenciesFound, self.time, self.imageAxis = plot.specgram(self.audio2, Fs=self.samplingrate, cmap=self.cmap)
+            # fig = plot.figure()
+            # plot.subplot(111)
+            self.powerSpectrum, self.freqenciesFound, self.time, self.imageAxis = plot.specgram(self.fname)
             plot.colorbar()
             # plot.ylim(self.min_freq_slider.value(),self.max_freq_slider.value())
             plot.xlabel('Time')
